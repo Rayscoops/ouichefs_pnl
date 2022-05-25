@@ -9,7 +9,6 @@
 
 #include <linux/bitmap.h>
 #include "ouichefs.h"
-
 /*
  * Return the first free bit (set to 1) in a given in-memory bitmap spanning
  * over multiple blocks and clear it.
@@ -21,6 +20,8 @@ static inline uint32_t get_first_free_bit(unsigned long *freemap,
 					  unsigned long size)
 {
 	uint32_t ino;
+
+	pr_info("inode : [get_first_free_bit]\n");
 
 	ino = find_first_bit(freemap, size);
 	if (ino == size)
@@ -39,6 +40,8 @@ static inline uint32_t get_free_inode(struct ouichefs_sb_info *sbi)
 {
 	uint32_t ret;
 
+	pr_info("inode : [get_free_inode]\n");
+
 	ret = get_first_free_bit(sbi->ifree_bitmap, sbi->nr_inodes);
 	if (ret) {
 		sbi->nr_free_inodes--;
@@ -54,7 +57,10 @@ static inline uint32_t get_free_inode(struct ouichefs_sb_info *sbi)
  */
 static inline uint32_t get_free_block(struct ouichefs_sb_info *sbi)
 {
+
 	uint32_t ret;
+
+	pr_info("inode : [get_free_block]\n");
 
 	ret = get_first_free_bit(sbi->bfree_bitmap, sbi->nr_blocks);
 	if (ret) {
@@ -71,6 +77,8 @@ static inline uint32_t get_free_block(struct ouichefs_sb_info *sbi)
 static inline int put_free_bit(unsigned long *freemap, unsigned long size,
 			       uint32_t i)
 {
+	pr_info("inode : [put_free_bit]\n");
+
 	/* i is greater than freemap size */
 	if (i > size)
 		return -1;
@@ -85,6 +93,8 @@ static inline int put_free_bit(unsigned long *freemap, unsigned long size,
  */
 static inline void put_inode(struct ouichefs_sb_info *sbi, uint32_t ino)
 {
+	pr_info("inode : [put_inode]\n");
+
 	if (put_free_bit(sbi->ifree_bitmap, sbi->nr_inodes, ino))
 		return;
 
@@ -98,6 +108,8 @@ static inline void put_inode(struct ouichefs_sb_info *sbi, uint32_t ino)
  */
 static inline void put_block(struct ouichefs_sb_info *sbi, uint32_t bno)
 {
+	pr_info("inode : [put_block]\n");
+
 	if (put_free_bit(sbi->bfree_bitmap, sbi->nr_blocks, bno))
 		return;
 

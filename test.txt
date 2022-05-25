@@ -1,0 +1,91 @@
+for f in *.c *.h ; do
+./checkpatch.pl --no-tree -f $f
+done
+total: 0 errors, 0 warnings, 71 lines checked
+
+dir.c has no obvious style problems and is ready for submission.
+WARNING: Prefer using '"%s...", __func__' to using 'ouichefs_file_get_block', this function's name, in a string
+#27: FILE: file.c:27:
++	pr_info("[ouichefs_file_get_block]\n");
+
+ERROR: space required after that ',' (ctx:VxV)
+#122: FILE: file.c:122:
++	pr_info("Dernier block :%d\n",index_version->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1]);
+ 	                             ^
+
+ERROR: space required before the open brace '{'
+#123: FILE: file.c:123:
++	while(index_version->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1] != -1){
+
+ERROR: space required before the open parenthesis '('
+#123: FILE: file.c:123:
++	while(index_version->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1] != -1){
+
+ERROR: space required after that ',' (ctx:VxV)
+#128: FILE: file.c:128:
++	pr_info("[%d version(s) du fichier]\n",v);
+ 	                                      ^
+
+WARNING: Prefer using '"%s...", __func__' to using 'ouichefs_readpage', this function's name, in a string
+#140: FILE: file.c:140:
++	pr_info("[ouichefs_readpage]\n");
+
+WARNING: Prefer using '"%s...", __func__' to using 'ouichefs_writepage', this function's name, in a string
+#150: FILE: file.c:150:
++	pr_info("[ouichefs_writepage]\n");
+
+WARNING: Prefer using '"%s...", __func__' to using 'ouichefs_write_begin', this function's name, in a string
+#164: FILE: file.c:164:
++	pr_info("[ouichefs_write_begin]\n");
+
+WARNING: Prefer using '"%s...", __func__' to using 'ouichefs_write_end', this function's name, in a string
+#198: FILE: file.c:198:
++	pr_info("[ouichefs_write_end]\n");
+
+total: 4 errors, 5 warnings, 262 lines checked
+
+NOTE: For some of the reported defects, checkpatch may be able to
+      mechanically convert to the typical style using --fix or --fix-inplace.
+
+file.c has style problems, please review.
+
+NOTE: If any of the errors are false positives, please report
+      them to the maintainer, see CHECKPATCH in MAINTAINERS.
+total: 0 errors, 0 warnings, 93 lines checked
+
+fs.c has no obvious style problems and is ready for submission.
+total: 0 errors, 0 warnings, 556 lines checked
+
+inode.c has no obvious style problems and is ready for submission.
+WARNING: Missing or malformed SPDX-License-Identifier tag in line 1
+#1: FILE: ouichefs.mod.c:1:
++#include <linux/module.h>
+
+total: 0 errors, 1 warnings, 27 lines checked
+
+NOTE: For some of the reported defects, checkpatch may be able to
+      mechanically convert to the typical style using --fix or --fix-inplace.
+
+ouichefs.mod.c has style problems, please review.
+
+NOTE: If any of the errors are false positives, please report
+      them to the maintainer, see CHECKPATCH in MAINTAINERS.
+total: 0 errors, 0 warnings, 348 lines checked
+
+super.c has no obvious style problems and is ready for submission.
+WARNING: It's generally not useful to have the filename in the file
+#10: FILE: bitmap.h:10:
++#include <linux/bitmap.h>
+
+total: 0 errors, 1 warnings, 108 lines checked
+
+NOTE: For some of the reported defects, checkpatch may be able to
+      mechanically convert to the typical style using --fix or --fix-inplace.
+
+bitmap.h has style problems, please review.
+
+NOTE: If any of the errors are false positives, please report
+      them to the maintainer, see CHECKPATCH in MAINTAINERS.
+total: 0 errors, 0 warnings, 110 lines checked
+
+ouichefs.h has no obvious style problems and is ready for submission.

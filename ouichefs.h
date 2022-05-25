@@ -7,6 +7,7 @@
 #ifndef _OUICHEFS_H
 #define _OUICHEFS_H
 
+#include <linux/list.h>
 #include <linux/fs.h>
 
 #define OUICHEFS_MAGIC  0x48434957
@@ -77,8 +78,9 @@ struct ouichefs_sb_info {
 };
 
 struct ouichefs_file_index_block {
-	uint32_t blocks[OUICHEFS_BLOCK_SIZE >> 2];
+	uint32_t blocks[(OUICHEFS_BLOCK_SIZE >> 2)];
 };
+
 
 struct ouichefs_dir_block {
 	struct ouichefs_file {
