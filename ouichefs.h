@@ -49,6 +49,7 @@ struct ouichefs_inode {
 	uint32_t i_blocks;	/* Block count */
 	uint32_t i_nlink;	/* Hard links count */
 	uint32_t index_block;	/* Block with list of blocks for this file */
+	uint32_t last_index_block;
 };
 
 struct ouichefs_inode_info {
@@ -78,6 +79,7 @@ struct ouichefs_sb_info {
 };
 
 struct ouichefs_file_index_block {
+	/* le dernier correspond au index block de donnée de la version précédente */
 	uint32_t blocks[(OUICHEFS_BLOCK_SIZE >> 2)];
 };
 

@@ -103,6 +103,7 @@ static int ouichefs_write_begin(struct file *file,
 	struct super_block *sb = inode->i_sb;
 	struct ouichefs_inode_info *ci = OUICHEFS_INODE(inode);
 	struct buffer_head *bh_version;
+	struct buffer_head *bh;
 	struct ouichefs_file_index_block *index_version;
 	struct ouichefs_sb_info *sbi = OUICHEFS_SB(file->f_inode->i_sb);
 	int err, v, bno_version, i, block_number, k;
@@ -134,6 +135,8 @@ static int ouichefs_write_begin(struct file *file,
 
 	if (index->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1] == 0) {
 		index->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1] = -1;
+		mark_buffer_dirty(bh_new);
+		sync_dirty_buffer(bh_new);
 	} else {
 		bno_version = get_free_block(sbi);
 		bh_new = sb_bread(sb, bno_version);
@@ -153,14 +156,32 @@ static int ouichefs_write_begin(struct file *file,
 			sync_dirty_buffer(new_bh_block);
 			k++;
 		}
-		new_index->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1] = ci->index_block;
-
 		/* Ajout du numéro de blocs contenant l'ancienne version */
+		new_index->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1] = ci->index_block;
+		/* les données de la nouvelle version */
 		ci->index_block = bno_version;
+		mark_buffer_dirty(bh_new);
+		sync_dirty_buffer(bh_new);
 	}
-	/* Affichage du nombre de version et des données de la deuxième version plus récente */
-	v = 1;
+	/* mise à jour de la latest_version */
+	struct ouichefs_inode *cinode = NULL;
+	//struct ouichefs_inode_info *ci = NULL;
 
+	uint32_t inode_block = (inode->i_ino / OUICHEFS_INODES_PER_BLOCK) + 1;
+	uint32_t inode_shift = inode->i_ino % OUICHEFS_INODES_PER_BLOCK;
+
+	ci = OUICHEFS_INODE(inode);
+	bh = sb_bread(sb, inode_block);
+	if (!bh) {
+		return -EIO;
+	}
+	cinode = (struct ouichefs_inode *)bh->b_data;
+	cinode += inode_shift;
+
+	cinode->last_index_block = ci->index_block;
+	pr_info("La dernière version est :%d\n",cinode->last_index_block);
+	/* Affichage du nombre de version */
+	v = 1;
 	bh_version = sb_bread(sb, ci->index_block);
 	index_version = (struct ouichefs_file_index_block *)bh_version->b_data;
 	pr_info("Dernier block :%d\n", index_version->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1]);

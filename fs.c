@@ -10,50 +10,18 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/fs.h>
-#include <linux/debugfs.h>
-#include <linux/init.h>
+
 #include "ouichefs.h"
+
+#define MAGIQUE 'N'
+#define GET_SAMPLE _IOR(MAGIQUE, 0, char*)
+#define TASKMON_STOP _IOW(MAGIQUE, 1, char*)
+#define TASKMON_START _IOW(MAGIQUE, 2, char*)
+#define TASKMON_SET_PID _IOW(MAGIQUE, 3, char*)
 
 /*
  * Mount a ouiche_fs partition
  */
-
-/* ouichefs_debug dentry */
-static struct dentry *ouichefs_debug;
-static struct dentry *subdir;
-
-// function for handle read and write events
-static ssize_t ouichefs_debug_read(struct file *f, char *buffer,
-		size_t len, loff_t *offset)
-{
-	// /*recuperer le dentry de la partition en lui donnant le path */
-	// int err;
-	// struct path partition_path;
-
-	// char *path_name = "/share/projet/ouichefs/ouichefsPartition";
-	
-	// err = kern_path(path_name, LOOKUP_FOLLOW, &partition_path);
-	// if (err) {
-	// 	return -1;
-	// }
-
-	// inode = d_backing_inode(path.dentry);
-
-	return snprintf(buffer, PAGE_SIZE, KERN_INFO "hi from debugfs\n");
-}
-// static ssize_t ouichefs_debug_write(struct file *f, char *buffer,
-// 		size_t len, loff_t *offset)
-// {
-// 	return 0;
-// }
-
-
-const struct file_operations ouichefs_file_fops = {
-	.owner = THIS_MODULE,
-	// .write = ouichefs_debug_write,
-	.read = ouichefs_debug_read,
-};
-
 struct dentry *ouichefs_mount(struct file_system_type *fs_type, int flags,
 			      const char *dev_name, void *data)
 {
@@ -103,25 +71,8 @@ static int __init ouichefs_init(void)
 		pr_err("register_filesystem() failed\n");
 		goto end;
 	}
-	subdir = debugfs_create_dir("ouichefs_debug_dir", NULL);
-	if (!subdir) {
-		pr_err("debugfs_create_dir failed \n");
-		ret = -ENOENT;
-		goto end;
-	}
-		
-	/* partie implantation de dbugfs */
-	ouichefs_debug = debugfs_create_file("ouichefs_debug_file", 0644,
-					subdir, NULL, &ouichefs_file_fops);
-	if (!ouichefs_debug) {
-		pr_err("debugfs_create_file ouichefs_debug failed \n");
-		goto exit;
-	}
-		
+
 	pr_info("module loaded\n");
-exit:
-	debugfs_remove_recursive(subdir);
-	ret = -ENOENT;
 end:
 	return ret;
 }
@@ -135,7 +86,7 @@ static void __exit ouichefs_exit(void)
 		pr_err("unregister_filesystem() failed\n");
 
 	ouichefs_destroy_inode_cache();
-	debugfs_remove_recursive(subdir);
+
 	pr_info("module unloaded\n");
 }
 
