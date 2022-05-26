@@ -8,4 +8,3 @@ clean:
 	rmmod ouichefs.ko
 	
 
-.PHONY: all 

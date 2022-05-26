@@ -37,7 +37,6 @@ void ouichefs_destroy_inode_cache(void)
 
 static struct inode *ouichefs_alloc_inode(struct super_block *sb)
 {
-	pr_info("[ouichefs_alloc_inode]\n");
 	struct ouichefs_inode_info *ci;
 
 	/* ci = kzalloc(sizeof(struct ouichefs_inode_info), GFP_KERNEL); */

@@ -76,6 +76,7 @@ struct ouichefs_sb_info {
 
 	unsigned long *ifree_bitmap; /* In-memory free inodes bitmap */
 	unsigned long *bfree_bitmap; /* In-memory free blocks bitmap */
+	struct dentry *ouichefs_debug_file; /* fichier de debug du ouichefs */
 };
 
 struct ouichefs_file_index_block {

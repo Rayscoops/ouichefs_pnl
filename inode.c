@@ -22,7 +22,7 @@ static const struct inode_operations ouichefs_inode_ops;
  */
 struct inode *ouichefs_iget(struct super_block *sb, unsigned long ino)
 {
-	pr_info("inode : [ouichefs_iget]\n");
+	//pr_info("inode : [ouichefs_iget]\n");
 	struct inode *inode = NULL;
 	struct ouichefs_inode *cinode = NULL;
 	struct ouichefs_inode_info *ci = NULL;
