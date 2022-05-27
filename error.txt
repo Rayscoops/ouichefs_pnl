@@ -1,0 +1,113 @@
+for f in *.c *.h ; do
+./checkpatch.pl --no-tree -f $f
+done
+total: 0 errors, 0 warnings, 71 lines checked
+
+dir.c has no obvious style problems and is ready for submission.
+total: 0 errors, 0 warnings, 295 lines checked
+
+file.c has no obvious style problems and is ready for submission.
+WARNING: please, no space before tabs
+#131: FILE: fs.c:131:
++ * ^Ivers une version plus ancienne si celle-ci existe$
+
+ERROR: trailing whitespace
+#132: FILE: fs.c:132:
++ * $
+
+ERROR: trailing whitespace
+#133: FILE: fs.c:133:
++ * 1 -> permet de supprimer toutes les versions a partir celle donnée $
+
+WARNING: Block comments use * on subsequent lines
+#136: FILE: fs.c:136:
++/* ATTENTION NE CHECKPATH
++long ouichefs_change_version(struct file *file, unsigned int cmd,
+
+WARNING: please, no space before tabs
+#147: FILE: fs.c:147:
++^I// ^Ipr_err("Erreur récupération de la requette\n");$
+
+WARNING: please, no space before tabs
+#148: FILE: fs.c:148:
++^I// ^Iret = -EFAULT;$
+
+WARNING: please, no space before tabs
+#149: FILE: fs.c:149:
++^I// ^Igoto err1;$
+
+WARNING: please, no space before tabs
+#155: FILE: fs.c:155:
++^I// ^Ipr_err("token kstrtoint\n");$
+
+WARNING: please, no space before tabs
+#156: FILE: fs.c:156:
++^I// ^Igoto err1;$
+
+WARNING: Missing a blank line after declarations
+#181: FILE: fs.c:181:
++	int i;
++	for (i = 0; i < OUICHEFS_MAX_SUBFILES; i++) {
+
+ERROR: trailing whitespace
+#200: FILE: fs.c:200:
++^I^I^I^I$
+
+ERROR: trailing whitespace
+#201: FILE: fs.c:201:
++^I^I^I^Iwhile ((index->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1] != -1)) {^I^I^I$
+
+ERROR: trailing whitespace
+#225: FILE: fs.c:225:
++^I^I^I$
+
+total: 5 errors, 8 warnings, 356 lines checked
+
+NOTE: For some of the reported defects, checkpatch may be able to
+      mechanically convert to the typical style using --fix or --fix-inplace.
+
+NOTE: Whitespace errors detected.
+      You may wish to use scripts/cleanpatch or scripts/cleanfile
+
+fs.c has style problems, please review.
+
+NOTE: If any of the errors are false positives, please report
+      them to the maintainer, see CHECKPATCH in MAINTAINERS.
+total: 0 errors, 0 warnings, 557 lines checked
+
+inode.c has no obvious style problems and is ready for submission.
+WARNING: Missing or malformed SPDX-License-Identifier tag in line 1
+#1: FILE: ouichefs.mod.c:1:
++#include <linux/module.h>
+
+total: 0 errors, 1 warnings, 27 lines checked
+
+NOTE: For some of the reported defects, checkpatch may be able to
+      mechanically convert to the typical style using --fix or --fix-inplace.
+
+ouichefs.mod.c has style problems, please review.
+
+NOTE: If any of the errors are false positives, please report
+      them to the maintainer, see CHECKPATCH in MAINTAINERS.
+total: 0 errors, 0 warnings, 348 lines checked
+
+super.c has no obvious style problems and is ready for submission.
+WARNING: It's generally not useful to have the filename in the file
+#10: FILE: bitmap.h:10:
++#include <linux/bitmap.h>
+
+total: 0 errors, 1 warnings, 109 lines checked
+
+NOTE: For some of the reported defects, checkpatch may be able to
+      mechanically convert to the typical style using --fix or --fix-inplace.
+
+bitmap.h has style problems, please review.
+
+NOTE: If any of the errors are false positives, please report
+      them to the maintainer, see CHECKPATCH in MAINTAINERS.
+total: 0 errors, 0 warnings, 115 lines checked
+
+ouichefs.h has no obvious style problems and is ready for submission.
+total: 0 errors, 0 warnings, 17 lines checked
+
+requettes.h has no obvious style problems and is ready for submission.

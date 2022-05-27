@@ -9,6 +9,7 @@
 
 #include <linux/bitmap.h>
 #include "ouichefs.h"
+
 /*
  * Return the first free bit (set to 1) in a given in-memory bitmap spanning
  * over multiple blocks and clear it.
@@ -53,9 +54,7 @@ static inline uint32_t get_free_inode(struct ouichefs_sb_info *sbi)
  */
 static inline uint32_t get_free_block(struct ouichefs_sb_info *sbi)
 {
-
 	uint32_t ret;
-
 
 	ret = get_first_free_bit(sbi->bfree_bitmap, sbi->nr_blocks);
 	if (ret) {

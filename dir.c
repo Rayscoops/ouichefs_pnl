@@ -20,8 +20,6 @@
  */
 static int ouichefs_iterate(struct file *dir, struct dir_context *ctx)
 {
-	pr_info("inode : [ouichefs_iterate]\n");
-
 	struct inode *inode = file_inode(dir);
 	struct ouichefs_inode_info *ci = OUICHEFS_INODE(inode);
 	struct super_block *sb = inode->i_sb;

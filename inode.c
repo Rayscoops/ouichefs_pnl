@@ -2,7 +2,7 @@
 /*
  * ouiche_fs - a simple educational filesystem for Linux
  *
- * Copyright (C) 2018 Redha Gouicem <redha.gouicem@lip6.fr>
+ * Copyright (C) 2018  Redha Gouicem <redha.gouicem@lip6.fr>
  */
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
@@ -22,7 +22,6 @@ static const struct inode_operations ouichefs_inode_ops;
  */
 struct inode *ouichefs_iget(struct super_block *sb, unsigned long ino)
 {
-	//pr_info("inode : [ouichefs_iget]\n");
 	struct inode *inode = NULL;
 	struct ouichefs_inode *cinode = NULL;
 	struct ouichefs_inode_info *ci = NULL;
@@ -101,7 +100,6 @@ failed:
 static struct dentry *ouichefs_lookup(struct inode *dir, struct dentry *dentry,
 				      unsigned int flags)
 {
-	pr_info("inode : [ouichefs_lookup]\n");
 	struct super_block *sb = dir->i_sb;
 	struct ouichefs_inode_info *ci_dir = OUICHEFS_INODE(dir);
 	struct inode *inode = NULL;
@@ -148,8 +146,6 @@ static struct dentry *ouichefs_lookup(struct inode *dir, struct dentry *dentry,
  */
 static struct inode *ouichefs_new_inode(struct inode *dir, mode_t mode)
 {
-	pr_info("inode : [ouichefs_new_inode]\n");
-
 	struct inode *inode;
 	struct ouichefs_inode_info *ci;
 	struct super_block *sb;
@@ -224,8 +220,7 @@ put_ino:
 static int ouichefs_create(struct inode *dir, struct dentry *dentry,
 			   umode_t mode, bool excl)
 {
-	pr_info("inode : [ouichefs_create]\n");
-
+	pr_info("creation de fichier avec ouichefs !!!\n");
 	struct super_block *sb;
 	struct inode *inode;
 	struct ouichefs_inode_info *ci_dir;
@@ -313,8 +308,6 @@ end:
  */
 static int ouichefs_unlink(struct inode *dir, struct dentry *dentry)
 {
-	pr_info("inode : [ouichefs_unlink]\n");
-
 	struct super_block *sb = dir->i_sb;
 	struct ouichefs_sb_info *sbi = OUICHEFS_SB(sb);
 	struct inode *inode = d_inode(dentry);
@@ -416,8 +409,6 @@ static int ouichefs_rename(struct inode *old_dir, struct dentry *old_dentry,
 			   struct inode *new_dir, struct dentry *new_dentry,
 			   unsigned int flags)
 {
-	pr_info("inode : [ouichefs_rename]\n");
-
 	struct super_block *sb = old_dir->i_sb;
 	struct ouichefs_inode_info *ci_old = OUICHEFS_INODE(old_dir);
 	struct ouichefs_inode_info *ci_new = OUICHEFS_INODE(new_dir);
@@ -529,15 +520,11 @@ relse_new:
 static int ouichefs_mkdir(struct inode *dir, struct dentry *dentry,
 			  umode_t mode)
 {
-	pr_info("inode : [ouichefs_mkdir]\n");
-
 	return ouichefs_create(dir, dentry, mode | S_IFDIR, 0);
 }
 
 static int ouichefs_rmdir(struct inode *dir, struct dentry *dentry)
 {
-	pr_info("inode : [ouichefs_rmdir]\n");
-
 	struct super_block *sb = dir->i_sb;
 	struct inode *inode = d_inode(dentry);
 	struct buffer_head *bh;

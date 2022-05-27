@@ -32,7 +32,6 @@ static int ouichefs_file_get_block(struct inode *inode, sector_t iblock,
 	bool alloc = false;
 	int ret = 0, bno;
 
-	pr_info("[ouichefs_file_get_block]\n");
 	/* If block number exceeds filesize, fail */
 	if (iblock >= (OUICHEFS_BLOCK_SIZE >> 2) - 1)
 		return -EFBIG;
@@ -70,7 +69,6 @@ brelse_index:
  */
 static int ouichefs_readpage(struct file *file, struct page *page)
 {
-	pr_info("[ouichefs_readpage]\n");
 	return mpage_readpage(page, ouichefs_file_get_block);
 }
 
@@ -80,7 +78,6 @@ static int ouichefs_readpage(struct file *file, struct page *page)
  */
 static int ouichefs_writepage(struct page *page, struct writeback_control *wbc)
 {
-	pr_info("[ouichefs_writepage]\n");
 	return block_write_full_page(page, ouichefs_file_get_block, wbc);
 }
 
@@ -109,10 +106,15 @@ static int ouichefs_write_begin(struct file *file,
 	int err, v, bno_version, i, block_number, k;
 	uint32_t nr_allocs = 0;
 
-	pr_info("[ouichefs_write_begin]\n");
-	/* Check if the write can be completed (enough space?) */
+
+	/* mise à jour de la latest_version et test si droit à l'ecriture */
+	struct ouichefs_inode *cinode = NULL;
+
+	/* Check if the write can be completed (enough space or have right?) */
+
 	if (pos + len > OUICHEFS_MAX_FILESIZE)
 		return -ENOSPC;
+
 	nr_allocs = max(pos + len, file->f_inode->i_size) / OUICHEFS_BLOCK_SIZE;
 	if (nr_allocs > file->f_inode->i_blocks - 1)
 		nr_allocs -= file->f_inode->i_blocks - 1;
@@ -120,28 +122,45 @@ static int ouichefs_write_begin(struct file *file,
 		nr_allocs = 0;
 	if (nr_allocs > sbi->nr_free_blocks)
 		return -ENOSPC;
-		/* prepare the write 	*/
-	err = block_write_begin(mapping, pos, len, flags, pagep,
-				ouichefs_file_get_block);
+
 ///////////////////////////////////////////////////////////////////////////////
 
-	/* récupère un block free */
 	bh_new = sb_bread(sb, ci->index_block);
 	if (!bh_new)
 		return -EIO;
 
 	/* récupère le pointeur vers le début des datas du block */
 	index = (struct ouichefs_file_index_block *)bh_new->b_data;
+	uint32_t inode_block = (inode->i_ino / OUICHEFS_INODES_PER_BLOCK) + 1;
+	uint32_t inode_shift = inode->i_ino % OUICHEFS_INODES_PER_BLOCK;
+
+	bh = sb_bread(sb, inode_block);
+	if (!bh)
+		return -EIO;
+	cinode = (struct ouichefs_inode *)bh->b_data;
 
 	if (index->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1] == 0) {
+		/* premiere fois qu'on ecrit sur le file */
 		index->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1] = -1;
+		cinode->can_write = true;
+		cinode->nb_versions = 0;
 		mark_buffer_dirty(bh_new);
 		sync_dirty_buffer(bh_new);
+		mark_inode_dirty(inode);
 	} else {
+		if (!cinode->can_write) {
+			/* y'a déjà eu un changement de version */
+			pr_err("Read-only file system\n");
+			return -EROFS;
+		}
+		/* récupère un block free */
 		bno_version = get_free_block(sbi);
 		bh_new = sb_bread(sb, bno_version);
-		if (!bh_new)
+		if (!bh_new) {
+			put_block(sbi, bno_version);
 			return -EIO;
+		}
+
 		new_index = (struct ouichefs_file_index_block *)bh_new->b_data;
 		k = 0;
 		/* Pour chaque blocs alloués on copie les données */
@@ -149,8 +168,10 @@ static int ouichefs_write_begin(struct file *file,
 			block_number = get_free_block(sbi);
 			new_bh_block = sb_bread(sb, block_number);
 			bh_block = sb_bread(sb, index->blocks[i]);
-			if (!bh_block)
+			if (!bh_block) {
+				put_block(sbi, bno_version);
 				return -EIO;
+			}
 			memcpy(new_bh_block->b_data, bh_block->b_data, OUICHEFS_BLOCK_SIZE);
 			mark_buffer_dirty(new_bh_block);
 			sync_dirty_buffer(new_bh_block);
@@ -159,27 +180,26 @@ static int ouichefs_write_begin(struct file *file,
 		/* Ajout du numéro de blocs contenant l'ancienne version */
 		new_index->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1] = ci->index_block;
 		/* les données de la nouvelle version */
+		mark_inode_dirty(inode);
 		ci->index_block = bno_version;
 		mark_buffer_dirty(bh_new);
 		sync_dirty_buffer(bh_new);
 	}
-	/* mise à jour de la latest_version */
-	struct ouichefs_inode *cinode = NULL;
-	//struct ouichefs_inode_info *ci = NULL;
+	/* prepare the write */
+	err = block_write_begin(mapping, pos, len, flags, pagep,
+				ouichefs_file_get_block);
 
-	uint32_t inode_block = (inode->i_ino / OUICHEFS_INODES_PER_BLOCK) + 1;
-	uint32_t inode_shift = inode->i_ino % OUICHEFS_INODES_PER_BLOCK;
-
+	/* lecture des données */
 	ci = OUICHEFS_INODE(inode);
-	bh = sb_bread(sb, inode_block);
-	if (!bh) {
-		return -EIO;
-	}
-	cinode = (struct ouichefs_inode *)bh->b_data;
-	cinode += inode_shift;
-
 	cinode->last_index_block = ci->index_block;
-	pr_info("La dernière version est :%d\n",cinode->last_index_block);
+	cinode->nb_versions++; /* on viens de write on incrémente */
+	cinode += inode_shift;
+	mark_inode_dirty(inode);
+	mark_buffer_dirty(bh);
+	sync_dirty_buffer(bh);
+
+
+	pr_info("La dernière version est :%d\n", cinode->last_index_block);
 	/* Affichage du nombre de version */
 	v = 1;
 	bh_version = sb_bread(sb, ci->index_block);
@@ -215,7 +235,6 @@ static int ouichefs_write_end(struct file *file, struct address_space *mapping,
 	struct ouichefs_inode_info *ci = OUICHEFS_INODE(inode);
 	struct super_block *sb = inode->i_sb;
 	/* Complete the write() */
-	pr_info("[ouichefs_write_end]\n");
 	ret = generic_write_end(file, mapping, pos, len, copied, page, fsdata);
 	if (ret < len) {
 		pr_err("%s:%d: wrote less than asked... what do I do? nothing for now...\n",

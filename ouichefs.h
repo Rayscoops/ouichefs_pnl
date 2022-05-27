@@ -7,8 +7,10 @@
 #ifndef _OUICHEFS_H
 #define _OUICHEFS_H
 
-#include <linux/list.h>
 #include <linux/fs.h>
+#include <linux/ioctl.h>
+#include <linux/module.h>
+#include <linux/kernel.h>
 
 #define OUICHEFS_MAGIC  0x48434957
 
@@ -40,16 +42,18 @@
 
 struct ouichefs_inode {
 	uint32_t i_mode;	/* File mode */
-	uint32_t i_uid;         /* Owner id */
-	uint32_t i_gid;		/* Group id */
+	uint32_t i_uid;        /* Owner id */
+	uint32_t i_gid;	/* Group id */
 	uint32_t i_size;	/* Size in bytes */
 	uint32_t i_ctime;	/* Inode change time */
 	uint32_t i_atime;	/* Access time */
 	uint32_t i_mtime;	/* Modification time */
 	uint32_t i_blocks;	/* Block count */
 	uint32_t i_nlink;	/* Hard links count */
+	uint32_t last_index_block; /* num block de la derniere version */
+	uint32_t nb_versions;
+	bool can_write;	/*lors du changement de version peut-on ecrir*/
 	uint32_t index_block;	/* Block with list of blocks for this file */
-	uint32_t last_index_block;
 };
 
 struct ouichefs_inode_info {
@@ -80,10 +84,8 @@ struct ouichefs_sb_info {
 };
 
 struct ouichefs_file_index_block {
-	/* le dernier correspond au index block de donnée de la version précédente */
 	uint32_t blocks[(OUICHEFS_BLOCK_SIZE >> 2)];
 };
-
 
 struct ouichefs_dir_block {
 	struct ouichefs_file {

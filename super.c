@@ -19,7 +19,6 @@ static struct kmem_cache *ouichefs_inode_cache;
 
 int ouichefs_init_inode_cache(void)
 {
-	pr_info("[ouichefs_init_inode_cache]\n");
 	ouichefs_inode_cache =
 		kmem_cache_create("ouichefs_cache",
 				  sizeof(struct ouichefs_inode_info), 0,
@@ -31,7 +30,6 @@ int ouichefs_init_inode_cache(void)
 
 void ouichefs_destroy_inode_cache(void)
 {
-	pr_info("[ouichefs_destroy_inode_cache]\n");
 	kmem_cache_destroy(ouichefs_inode_cache);
 }
 
@@ -49,7 +47,6 @@ static struct inode *ouichefs_alloc_inode(struct super_block *sb)
 
 static void ouichefs_destroy_inode(struct inode *inode)
 {
-	pr_info("[ouichefs_destroy_inode]\n");
 	struct ouichefs_inode_info *ci;
 
 	ci = OUICHEFS_INODE(inode);
@@ -59,7 +56,6 @@ static void ouichefs_destroy_inode(struct inode *inode)
 static int ouichefs_write_inode(struct inode *inode,
 				struct writeback_control *wbc)
 {
-	pr_info("[ouichefs_write_inode]\n");
 	struct ouichefs_inode *disk_inode;
 	struct ouichefs_inode_info *ci = OUICHEFS_INODE(inode);
 	struct super_block *sb = inode->i_sb;
@@ -99,7 +95,6 @@ static int ouichefs_write_inode(struct inode *inode,
 
 static int sync_sb_info(struct super_block *sb, int wait)
 {
-	pr_info("[sync_sb_info]\n");
 	struct ouichefs_sb_info *sbi = OUICHEFS_SB(sb);
 	struct ouichefs_sb_info *disk_sb;
 	struct buffer_head *bh;
@@ -128,7 +123,6 @@ static int sync_sb_info(struct super_block *sb, int wait)
 
 static int sync_ifree(struct super_block *sb, int wait)
 {
-	pr_info("[sync_ifree]\n");
 	struct ouichefs_sb_info *sbi = OUICHEFS_SB(sb);
 	struct buffer_head *bh;
 	int i, idx;
@@ -156,7 +150,6 @@ static int sync_ifree(struct super_block *sb, int wait)
 
 static int sync_bfree(struct super_block *sb, int wait)
 {
-	pr_info("[sync_bfree]\n");
 	struct ouichefs_sb_info *sbi = OUICHEFS_SB(sb);
 	struct buffer_head *bh;
 	int i, idx;
@@ -184,8 +177,6 @@ static int sync_bfree(struct super_block *sb, int wait)
 
 static void ouichefs_put_super(struct super_block *sb)
 {
-	pr_info("[ouichefs_put_super]\n");
-
 	struct ouichefs_sb_info *sbi = OUICHEFS_SB(sb);
 
 	if (sbi) {
@@ -197,8 +188,6 @@ static void ouichefs_put_super(struct super_block *sb)
 
 static int ouichefs_sync_fs(struct super_block *sb, int wait)
 {
-	pr_info("[ouichefs_sync_fs]\n");
-
 	int ret = 0;
 
 	ret = sync_sb_info(sb, wait);
@@ -216,8 +205,6 @@ static int ouichefs_sync_fs(struct super_block *sb, int wait)
 
 static int ouichefs_statfs(struct dentry *dentry, struct kstatfs *stat)
 {
-	pr_info("[ouichefs_statfs]\n");
-
 	struct super_block *sb = dentry->d_sb;
 	struct ouichefs_sb_info *sbi = OUICHEFS_SB(sb);
 
@@ -245,8 +232,6 @@ static struct super_operations ouichefs_super_ops = {
 /* Fill the struct superblock from partition superblock */
 int ouichefs_fill_super(struct super_block *sb, void *data, int silent)
 {
-	pr_info("[ouichefs_fill_super]\n");
-
 	struct buffer_head *bh = NULL;
 	struct ouichefs_sb_info *csb = NULL;
 	struct ouichefs_sb_info *sbi = NULL;
