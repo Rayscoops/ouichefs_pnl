@@ -220,7 +220,6 @@ put_ino:
 static int ouichefs_create(struct inode *dir, struct dentry *dentry,
 			   umode_t mode, bool excl)
 {
-	pr_info("creation de fichier avec ouichefs !!!\n");
 	struct super_block *sb;
 	struct inode *inode;
 	struct ouichefs_inode_info *ci_dir;

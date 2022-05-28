@@ -54,6 +54,7 @@ struct ouichefs_inode {
 	uint32_t nb_versions;
 	bool can_write;	/*lors du changement de version peut-on ecrir*/
 	uint32_t index_block;	/* Block with list of blocks for this file */
+	uint32_t index_data;
 };
 
 struct ouichefs_inode_info {
