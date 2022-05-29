@@ -8,13 +8,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-
 int main(int argc, char ** argv)
 {
     if(argc < 3){
         printf("Il faut un nom de fichier suivi de la version voulue\n");
     }
     int fd = open (argv[1], O_RDWR);
-    long ret_val = ioctl(fd, CHANGE_VERSION, argv[2]);
+    long ret_val = ioctl(fd, RESTORE_VERSION, argv[2]);
     return 0;
 }

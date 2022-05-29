@@ -148,7 +148,7 @@ struct dentry *ouichefs_mount(struct file_system_type *fs_type, int flags,
 		pr_info("'%s' mount success\n", dev_name);
 
 	/*--------------------------------------------------------------*/
-	/* partie 2 : création du debugfs				*/
+	/* Partie 2 : création du debugfs				*/
 	/*--------------------------------------------------------------*/
 	inode_partition = dentry->d_inode;
 	/* récupération du super block de l'inode de la partition */

@@ -50,12 +50,10 @@ struct ouichefs_inode {
 	uint32_t i_mtime;	/* Modification time */
 	uint32_t i_blocks;	/* Block count */
 	uint32_t i_nlink;	/* Hard links count */
-	uint32_t last_index_block; /* num block de la derniere version */
-	uint32_t nb_versions;
-	int can_write;	/*lors du changement de version peut-on ecrir*/
+	uint32_t last_index_block; /* numéro de block de la dernière version */
+	uint32_t nb_versions; /* nombre de version du fichier */
+	int can_write;	/* permet de savoir si on peut écrire dans la version actuelle */
 	uint32_t index_block;	/* Block with list of blocks for this file */
-	/* dans quel block écrir dans blocks (différencier > et >>)*/
-	uint32_t cur_index_data;
 };
 
 struct ouichefs_inode_info {

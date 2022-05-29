@@ -9,6 +9,6 @@
 #define MAGIQUE 'N'
 /* 0 -> pour changer le numéro de la version courante */
 #define CHANGE_VERSION _IOWR(MAGIQUE, 0, char*)
-#define RESTOR_VERSION _IOWR(MAGIQUE, 1, char*)
-#define RLEASE_VERSION _IOWR(MAGIQUE, 2, char*)
+#define RESTORE_VERSION _IOWR(MAGIQUE, 1, char*)
+#define RELEASE_VERSION _IOWR(MAGIQUE, 2, char*)
 /*---------------------------------------------------------------------------*/

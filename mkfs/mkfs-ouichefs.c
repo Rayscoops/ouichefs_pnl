@@ -20,16 +20,19 @@
 
 
 struct ouichefs_inode {
-	mode_t   i_mode;	  /* File mode */
-	uint32_t i_uid;           /* Owner id */
-	uint32_t i_gid;		  /* Group id */
-	uint32_t i_size;	  /* Size in bytes */
-	uint32_t i_ctime;	  /* Inode change time */
-	uint32_t i_atime;	  /* Access time */
-	uint32_t i_mtime;	  /* Modification time */
-	uint32_t i_blocks;	  /* Block count (subdir count for directories) */
-	uint32_t i_nlink;	  /* Hard links count */
-	uint32_t index_block;	  /* Block with list of blocks for this file */
+	uint32_t i_mode;	/* File mode */
+	uint32_t i_uid;         /* Owner id */
+	uint32_t i_gid;		/* Group id */
+	uint32_t i_size;	/* Size in bytes */
+	uint32_t i_ctime;	/* Inode change time */
+	uint32_t i_atime;	/* Access time */
+	uint32_t i_mtime;	/* Modification time */
+	uint32_t i_blocks;	/* Block count */
+	uint32_t i_nlink;	/* Hard links count */
+	uint32_t last_index_block; /* num block de la derniere version */
+	uint32_t nb_versions;
+	int can_write;	/*lors du changement de version peut-on ecrir*/
+	uint32_t index_block;	/* Block with list of blocks for this file */
 };
 
 #define OUICHEFS_INODES_PER_BLOCK (OUICHEFS_BLOCK_SIZE / sizeof(struct ouichefs_inode))
