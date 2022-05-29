@@ -42,8 +42,8 @@
 
 struct ouichefs_inode {
 	uint32_t i_mode;	/* File mode */
-	uint32_t i_uid;        /* Owner id */
-	uint32_t i_gid;	/* Group id */
+	uint32_t i_uid;         /* Owner id */
+	uint32_t i_gid;		/* Group id */
 	uint32_t i_size;	/* Size in bytes */
 	uint32_t i_ctime;	/* Inode change time */
 	uint32_t i_atime;	/* Access time */
@@ -52,9 +52,10 @@ struct ouichefs_inode {
 	uint32_t i_nlink;	/* Hard links count */
 	uint32_t last_index_block; /* num block de la derniere version */
 	uint32_t nb_versions;
-	bool can_write;	/*lors du changement de version peut-on ecrir*/
+	int can_write;	/*lors du changement de version peut-on ecrir*/
 	uint32_t index_block;	/* Block with list of blocks for this file */
-	uint32_t index_data;
+	/* dans quel block écrir dans blocks (différencier > et >>)*/
+	uint32_t cur_index_data;
 };
 
 struct ouichefs_inode_info {
@@ -81,7 +82,7 @@ struct ouichefs_sb_info {
 
 	unsigned long *ifree_bitmap; /* In-memory free inodes bitmap */
 	unsigned long *bfree_bitmap; /* In-memory free blocks bitmap */
-	struct dentry *ouichefs_debug_file; /* fichier de debug du ouichefs */
+	//struct dentry *ouichefs_debug_file; /* fichier de debug du ouichefs */
 };
 
 struct ouichefs_file_index_block {
@@ -114,3 +115,7 @@ extern const struct address_space_operations ouichefs_aops;
 					    vfs_inode))
 
 #endif	/* _OUICHEFS_H */
+
+
+
+

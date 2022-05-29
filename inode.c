@@ -2,7 +2,7 @@
 /*
  * ouiche_fs - a simple educational filesystem for Linux
  *
- * Copyright (C) 2018  Redha Gouicem <redha.gouicem@lip6.fr>
+ * Copyright (C) 2018 Redha Gouicem <redha.gouicem@lip6.fr>
  */
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
@@ -220,6 +220,7 @@ put_ino:
 static int ouichefs_create(struct inode *dir, struct dentry *dentry,
 			   umode_t mode, bool excl)
 {
+	pr_info("creation de fichier avec ouichefs !!!\n");
 	struct super_block *sb;
 	struct inode *inode;
 	struct ouichefs_inode_info *ci_dir;

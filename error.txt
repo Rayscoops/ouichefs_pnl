@@ -4,64 +4,341 @@ done
 total: 0 errors, 0 warnings, 71 lines checked
 
 dir.c has no obvious style problems and is ready for submission.
-total: 0 errors, 0 warnings, 295 lines checked
+ERROR: space required before the open brace '{'
+#33: FILE: file.c:33:
++	if((ci == NULL) || (sb == NULL)){
 
-file.c has no obvious style problems and is ready for submission.
-WARNING: please, no space before tabs
-#131: FILE: fs.c:131:
-+ * ^Ivers une version plus ancienne si celle-ci existe$
+ERROR: space required before the open parenthesis '('
+#33: FILE: file.c:33:
++	if((ci == NULL) || (sb == NULL)){
+
+WARNING: unnecessary whitespace before a quoted newline
+#34: FILE: file.c:34:
++		pr_err("l'index ou le super block n'est pas allouer \n");
+
+ERROR: space required before the open brace '{'
+#39: FILE: file.c:39:
++	if (!bh_current_block){
 
 ERROR: trailing whitespace
-#132: FILE: fs.c:132:
+#43: FILE: file.c:43:
++^I^I$
+
+ERROR: trailing whitespace
+#45: FILE: file.c:45:
++^I/* $
+
+ERROR: trailing whitespace
+#46: FILE: file.c:46:
++^I *récupère le pointeur vers le début des numéros de block ou sont $
+
+WARNING: Missing a blank line after declarations
+#51: FILE: file.c:51:
++	int i = 0;
++	while (index->blocks[i] > 0) {
+
+WARNING: unnecessary whitespace before a quoted newline
+#54: FILE: file.c:54:
++			pr_info("erreur I/O \n");
+
+WARNING: Avoid line continuations in quoted strings
+#58: FILE: file.c:58:
++		pr_info("{current block : %d}\
+
+ERROR: space prohibited before that ':' (ctx:WxE)
+#66: FILE: file.c:66:
++err_2 :
+       ^
+
+ERROR: space prohibited before that ':' (ctx:WxE)
+#68: FILE: file.c:68:
++err_1 :
+       ^
+
+WARNING: Prefer using '"%s...", __func__' to using 'ouichefs_file_get_block', this function's name, in a string
+#85: FILE: file.c:85:
++	pr_info("[ouichefs_file_get_block]\n");
+
+WARNING: Prefer using '"%s...", __func__' to using 'ouichefs_readpage', this function's name, in a string
+#123: FILE: file.c:123:
++	pr_info("[ouichefs_readpage]\n");
+
+WARNING: Prefer using '"%s...", __func__' to using 'ouichefs_writepage', this function's name, in a string
+#133: FILE: file.c:133:
++	pr_info("[ouichefs_writepage]\n");
+
+WARNING: Missing a blank line after declarations
+#166: FILE: file.c:166:
++	struct ouichefs_inode *cinode = NULL;
++	pr_info("[ouichefs_write_begin]\n");
+
+WARNING: Prefer using '"%s...", __func__' to using 'ouichefs_write_begin', this function's name, in a string
+#166: FILE: file.c:166:
++	pr_info("[ouichefs_write_begin]\n");
+
+WARNING: Missing a blank line after declarations
+#184: FILE: file.c:184:
++	uint32_t inode_shift = inode->i_ino % OUICHEFS_INODES_PER_BLOCK;
++	bh = sb_bread(sb, inode_block);
+
+ERROR: trailing whitespace
+#188: FILE: file.c:188:
++^I^I$
+
+ERROR: space required before the open brace '{'
+#198: FILE: file.c:198:
++	if (!bh_current_block){
+
+ERROR: trailing whitespace
+#202: FILE: file.c:202:
++^I^I$
+
+ERROR: trailing whitespace
+#204: FILE: file.c:204:
++^I/* $
+
+ERROR: trailing whitespace
+#205: FILE: file.c:205:
++^I *récupère le pointeur vers le début des numéros de block ou sont $
+
+WARNING: Avoid line continuations in quoted strings
+#234: FILE: file.c:234:
++			pr_err("Erreur recupération du buffer\
+
+ERROR: trailing whitespace
+#246: FILE: file.c:246:
++^I^I^Inew_bh_block = sb_bread(sb, block_number);^I^I^I$
+
+WARNING: please, no space before tabs
+#249: FILE: file.c:249:
++^I^I^I// ^Ibrelse(bh_block);$
+
+WARNING: please, no space before tabs
+#252: FILE: file.c:252:
++^I^I^I// ^Ipr_info("Erreur de creation d'une\$
+
+WARNING: please, no space before tabs
+#253: FILE: file.c:253:
++^I^I^I// ^I^Inouvelle version\n");$
+
+WARNING: please, no space before tabs
+#254: FILE: file.c:254:
++^I^I^I// ^I/*il faut libérer tout les blocks alloués*/$
+
+WARNING: please, no space before tabs
+#255: FILE: file.c:255:
++^I^I^I// ^Iwhile (k >=0) {$
+
+WARNING: please, no space before tabs
+#256: FILE: file.c:256:
++^I^I^I// ^I^Iput_block(sbi, new_index->blocks[k]);$
+
+WARNING: please, no space before tabs
+#257: FILE: file.c:257:
++^I^I^I// ^I^Ik--;$
+
+WARNING: please, no space before tabs
+#258: FILE: file.c:258:
++^I^I^I// ^I}$
+
+WARNING: please, no space before tabs
+#259: FILE: file.c:259:
++^I^I^I// ^Ierr = -EIO;$
+
+WARNING: please, no space before tabs
+#260: FILE: file.c:260:
++^I^I^I// ^Igoto err_4;$
+
+ERROR: trailing whitespace
+#262: FILE: file.c:262:
++^I^I^I/* remettre les données à 0 si elle sont différentes pour ne pas $
+
+WARNING: unnecessary whitespace before a quoted newline
+#268: FILE: file.c:268:
++			pr_info("offset %lld \n ", pos);
+
+ERROR: space required after that ',' (ctx:VxV)
+#299: FILE: file.c:299:
++	pr_info("La dernière version est :%d\n",cinode->last_index_block);
+ 	                                        ^
+
+WARNING: please, no space before tabs
+#309: FILE: file.c:309:
++^I// ^Ibh_version = sb_bread(sb, index_version->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1]);$
+
+WARNING: please, no space before tabs
+#310: FILE: file.c:310:
++^I// ^Iindex_version = (struct ouichefs_file_index_block *)bh_version->b_data;$
+
+WARNING: please, no space before tabs
+#311: FILE: file.c:311:
++^I// ^Iv++;$
+
+WARNING: please, no space before tabs
+#312: FILE: file.c:312:
++^I// ^Ibrelse(bh_version);$
+
+WARNING: please, no space before tabs
+#316: FILE: file.c:316:
++^I/* prepare the write ^I*/$
+
+ERROR: space prohibited before that ':' (ctx:WxE)
+#325: FILE: file.c:325:
++err_3 :
+       ^
+
+ERROR: space prohibited before that ':' (ctx:WxE)
+#327: FILE: file.c:327:
++err_2 :
+       ^
+
+ERROR: space prohibited before that ':' (ctx:WxE)
+#329: FILE: file.c:329:
++err_1 :
+       ^
+
+WARNING: Prefer using '"%s...", __func__' to using 'ouichefs_write_end', this function's name, in a string
+#348: FILE: file.c:348:
++	pr_info("[ouichefs_write_end]\n");
+
+WARNING: please, no space before tabs
+#408: FILE: file.c:408:
++ * ^Ivers une version plus ancienne si celle-ci exist$
+
+ERROR: trailing whitespace
+#409: FILE: file.c:409:
 + * $
 
 ERROR: trailing whitespace
-#133: FILE: fs.c:133:
-+ * 1 -> permet de supprimer toutes les versions a partir celle donnée $
+#410: FILE: file.c:410:
++ * 1 -> permet de supprimer toutes les versions a partir $
 
-WARNING: Block comments use * on subsequent lines
-#136: FILE: fs.c:136:
-+/* ATTENTION NE CHECKPATH
-+long ouichefs_change_version(struct file *file, unsigned int cmd,
-
-WARNING: please, no space before tabs
-#147: FILE: fs.c:147:
-+^I// ^Ipr_err("Erreur récupération de la requette\n");$
+ERROR: trailing whitespace
+#411: FILE: file.c:411:
++ * ^Icelle donnée $
 
 WARNING: please, no space before tabs
-#148: FILE: fs.c:148:
-+^I// ^Iret = -EFAULT;$
-
-WARNING: please, no space before tabs
-#149: FILE: fs.c:149:
-+^I// ^Igoto err1;$
-
-WARNING: please, no space before tabs
-#155: FILE: fs.c:155:
-+^I// ^Ipr_err("token kstrtoint\n");$
-
-WARNING: please, no space before tabs
-#156: FILE: fs.c:156:
-+^I// ^Igoto err1;$
+#411: FILE: file.c:411:
++ * ^Icelle donnée $
 
 WARNING: Missing a blank line after declarations
-#181: FILE: fs.c:181:
-+	int i;
-+	for (i = 0; i < OUICHEFS_MAX_SUBFILES; i++) {
+#421: FILE: file.c:421:
++	int requested_version;
++	ret = copy_from_user (request, (char *)arg, size);
+
+WARNING: space prohibited between function name and open parenthesis '('
+#421: FILE: file.c:421:
++	ret = copy_from_user (request, (char *)arg, size);
 
 ERROR: trailing whitespace
-#200: FILE: fs.c:200:
-+^I^I^I^I$
+#450: FILE: file.c:450:
++^I^I$
 
 ERROR: trailing whitespace
-#201: FILE: fs.c:201:
-+^I^I^I^Iwhile ((index->blocks[(OUICHEFS_BLOCK_SIZE >> 2) - 1] != -1)) {^I^I^I$
+#458: FILE: file.c:458:
++^Iif ((requested_version > cinode->nb_versions) || $
+
+WARNING: unnecessary whitespace before a quoted newline
+#460: FILE: file.c:460:
++		pr_err("invalide version \n");
 
 ERROR: trailing whitespace
-#225: FILE: fs.c:225:
+#478: FILE: file.c:478:
++^I^I$
+
+WARNING: Missing a blank line after declarations
+#483: FILE: file.c:483:
++		int cur_version, last_version;
++		cur_version = cinode->last_index_block;
+
+ERROR: trailing whitespace
+#485: FILE: file.c:485:
++^I^Iwhile (last_version != -1) {^I$
+
+ERROR: trailing whitespace
+#492: FILE: file.c:492:
++^I^I^I^I^Iwrite_inode_now(file_inode, 1);^I$
+
+ERROR: trailing whitespace
+#502: FILE: file.c:502:
++^I^I^Ibrelse(bh_index);^I$
+
+WARNING: unnecessary whitespace before a quoted newline
+#505: FILE: file.c:505:
++				pr_err("errer lors de la récupération des données \n");
+
+ERROR: trailing whitespace
+#511: FILE: file.c:511:
 +^I^I^I$
 
-total: 5 errors, 8 warnings, 356 lines checked
+WARNING: labels should not be indented
+#514: FILE: file.c:514:
++	fin:
+
+ERROR: trailing whitespace
+#518: FILE: file.c:518:
++^I$
+
+ERROR: space required before the open brace '{'
+#535: FILE: file.c:535:
++	if (cmd == RESTOR_VERSION){
+
+WARNING: Missing a blank line after declarations
+#537: FILE: file.c:537:
++		struct buffer_head *bh_index_remouve_block;
++		pr_info("[restor versions]");
+
+ERROR: trailing whitespace
+#548: FILE: file.c:548:
++^I^I^Imy_version != requested_version) {^I$
+
+ERROR: space required before the open brace '{'
+#552: FILE: file.c:552:
++				if (index->blocks[k] != 0){
+
+ERROR: trailing whitespace
+#553: FILE: file.c:553:
++^I^I^I^I^I^I$
+
+WARNING: unnecessary whitespace before a quoted newline
+#556: FILE: file.c:556:
++						pr_err("errer lors de la récupération des données \n");
+
+ERROR: trailing whitespace
+#569: FILE: file.c:569:
++^I^I^I$
+
+WARNING: unnecessary whitespace before a quoted newline
+#573: FILE: file.c:573:
++				pr_err("errer lors de la récupération des données \n");
+
+ERROR: trailing whitespace
+#585: FILE: file.c:585:
++^I^I^Ici->index_block = cur_version; $
+
+ERROR: trailing whitespace
+#590: FILE: file.c:590:
++^I^I^Ici->index_block = cur_version; $
+
+WARNING: Avoid line continuations in quoted strings
+#592: FILE: file.c:592:
++			pr_info("changement de version impossible un probleme \
+
+ERROR: trailing whitespace
+#607: FILE: file.c:607:
++^I$
+
+ERROR: space prohibited before that ':' (ctx:WxE)
+#608: FILE: file.c:608:
++err1 :
+      ^
+
+ERROR: space prohibited before that ':' (ctx:WxE)
+#610: FILE: file.c:610:
++err_1 :
+       ^
+
+total: 40 errors, 40 warnings, 621 lines checked
 
 NOTE: For some of the reported defects, checkpatch may be able to
       mechanically convert to the typical style using --fix or --fix-inplace.
@@ -69,10 +346,13 @@ NOTE: For some of the reported defects, checkpatch may be able to
 NOTE: Whitespace errors detected.
       You may wish to use scripts/cleanpatch or scripts/cleanfile
 
-fs.c has style problems, please review.
+file.c has style problems, please review.
 
 NOTE: If any of the errors are false positives, please report
       them to the maintainer, see CHECKPATCH in MAINTAINERS.
+total: 0 errors, 0 warnings, 235 lines checked
+
+fs.c has no obvious style problems and is ready for submission.
 total: 0 errors, 0 warnings, 557 lines checked
 
 inode.c has no obvious style problems and is ready for submission.
@@ -105,7 +385,7 @@ bitmap.h has style problems, please review.
 
 NOTE: If any of the errors are false positives, please report
       them to the maintainer, see CHECKPATCH in MAINTAINERS.
-total: 0 errors, 0 warnings, 115 lines checked
+total: 0 errors, 0 warnings, 121 lines checked
 
 ouichefs.h has no obvious style problems and is ready for submission.
 total: 0 errors, 0 warnings, 17 lines checked
